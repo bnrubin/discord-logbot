@@ -53,6 +53,9 @@ def download_image(url):
 
 @bot.event
 async def on_message_edit(before, after):
+    if not after.author.bot:
+        return
+
     if after.embeds and after.embeds[0].title == 'Done!':
         data = after.embeds[0]
 
