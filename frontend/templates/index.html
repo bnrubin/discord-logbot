@@ -11,7 +11,8 @@
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" sync></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
-<script src="static/custom.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/venobox@2.1.4/dist/venobox.min.css" />
+
 </head>
 <body>
 		<header class="py-3 mb-3 border-bottom">
@@ -25,32 +26,14 @@
 
 	<main class="container py-5">
 {{ pagination.links }}
-<!---
-
-	<nav aria-label="...">
-  <ul class="pagination">
-    <li class="page-item {% if page == 1 %}disabled{% endif %}">
-	<a class="page-link" href="/?page={{ page - 1 }}&query={{ query }}">Previous</a>
-    </li>
-      
-    {% for num in range(1, total_pages + 1) %}
-    <li class="page-item"><a class="page-link {% if num == page %}active{% endif %}" href="/?page={{ num }}&query={{ query }}">{{ num }}</a></li>
-    {% endfor %}
-    <li class="page-item {% if page  == total_pages %}disabled{% endif %}">
-	<a class="page-link" href="/?page={{ page + 1 }}&query={{ query }}">Next</a>
-    </li>
-  </ul>
-</nav>
-<div>
--->
 {{ count }} results found
 </div>
 <div class="row" data-masonry='{"percentPosition": true }' id="gallery">
 	{% for item in data %}
 	<div class="col-sm-6 col-lg-4 mb-4">
 	<div class="card">
-		<a href="/images/{{item.filename}}" data-toggle="lightbox">
-			<img src="/images/{{item.filename}}" class="card-img-top" width="75%">
+		<a class="venobox" href="/images/{{item.filename}}" title="{{ item.prompt }}" data-gall="images">
+			<img src="/images/{{ thumbnail(item.filename) }}" class="card-img-top" width="75%" alt="{{ item.prompt }}">
 		</a>
 		<div class="card-body">
 		<p class="card-text">{{ item.prompt }}</p>
@@ -63,23 +46,10 @@
 	{% endfor %}
 </div>
 </div>
-<!--
-<nav aria-label="...">
-  <ul class="pagination">
-    <li class="page-item {% if page == 1 %}disabled{% endif %}">
-	<a class="page-link" href="/?page={{ page - 1 }}&query={{ query }}">Previous</a>
-    </li>
-    {% for num in range(1, total_pages + 1) %}
-    <li class="page-item"><a class="page-link {% if num == page %}active{% endif %}" href="/?page={{ num }}&query={{ query }}">{{ num }}</a></li>
-    {% endfor %}
-    <li class="page-item {% if page  == total_pages %}disabled{% endif %}">
-	<a class="page-link" href="/?page={{ page + 1 }}&query={{ query }}">Next</a>
-    </li>
-  </ul>
-</nav>
--->
 {{ pagination.links }}
 
 	</main>
+<script src="https://cdn.jsdelivr.net/npm/venobox@2.1.4/dist/venobox.min.js"></script>
+<script src="static/custom.js"></script>
 </body>
 </html>

@@ -3,11 +3,13 @@ from datetime import datetime, timezone
 from discord.ext import commands
 from dotenv import dotenv_values
 from pathlib import Path
+from PIL import Image
 from pprint import pprint
 from urllib.parse import quote_plus
 from urllib.parse import urlparse
 import discord
 import hashlib
+import io
 import logging
 import motor.motor_asyncio
 import requests
@@ -36,17 +38,28 @@ async def on_ready():
 
 
 def download_image(url):
+    resize = (512, 512)
     resp = requests.get(url)
     
     parsed = urlparse(url)
     ext = Path(parsed.path).suffix
 
-    
-    filename = '{}{}'.format(uuid.uuid4(), ext)
+    uu = uuid.uuid4()
+    filename = '{}{}'.format(uu, ext)
+    thumname = '{}.thumb{}'.format(uu, ext)
     filepath = Path(secrets['IMAGE_PATH'], filename)
+    thumpath = Path(secrets['IMAGE_PATH'], thumname)
+    
 
     with open(filepath, 'wb') as fd:
         fd.write(resp.content)
+
+    with open(thumpath, 'wb') as td:
+        image = io.BytesIO(resp.content)
+        with Image.open(image) as im:
+            im.thumbnail(resize)
+            im.save(td, "PNG")
+
 
     return filename
 

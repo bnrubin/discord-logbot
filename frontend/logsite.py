@@ -17,8 +17,6 @@ secrets = dotenv_values('.env')
 
 uri = 'mongodb://{}:{}@mongo:27017/logbot?authsource={}'.format(secrets['MONGO_USER'], secrets['MONGO_PASS'], 'logbot')
 
-print(uri)
-
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
 
@@ -85,7 +83,13 @@ def paginate(query, sort, page=1):
 
     return list(mongo.db.ai_interactions.aggregate(pipeline))[0]
 
-
+@app.context_processor
+def link_processor():
+    def thumbnail(filename):
+        """Insert thumnail into image filepath to serve up the smaller image"""
+        name, ext = filename.split('.')
+        return '.'.join([name, 'thumb', ext])
+    return dict(thumbnail=thumbnail)
 
 
 if __name__ == '__main__':

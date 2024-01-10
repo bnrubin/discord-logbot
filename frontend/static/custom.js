@@ -22,3 +22,8 @@ setTimeout(function () {
   msnry.layout();
 }, 5000);
 
+new VenoBox({
+  selector: '.venobox',
+  fitview: true
+});
+
